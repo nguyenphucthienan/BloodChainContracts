@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/nguyenphucthienan/BloodChainContracts/issues"
   },
-  "homepage": "https://github.com/nguyenphucthienan/BloodChainContracts#readme"
+  "homepage": "https://github.com/nguyenphucthienan/BloodChainContracts#readme",
+  "dependencies": {
+    "truffle-hdwallet-provider": "^1.0.14"
+  }
 }
