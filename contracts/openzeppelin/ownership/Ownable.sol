@@ -10,7 +10,7 @@ pragma solidity ^0.5.0;
  * the owner.
  */
 contract Ownable {
-    address payable private _owner;
+    address payable internal _owner;
 
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
 

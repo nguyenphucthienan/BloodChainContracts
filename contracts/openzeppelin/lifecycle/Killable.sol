@@ -8,6 +8,6 @@ import "./../ownership/Ownable.sol";
  */
 contract Killable is Ownable {
     function kill() public onlyOwner payable {
-        selfdestruct(owner());
+        selfdestruct(_owner);
     }
 }
