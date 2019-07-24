@@ -22,13 +22,18 @@ contract BloodChain is Killable {
         _owner.transfer(amount);
     }
 
-    function createBloodPack(string memory _bloodPackId) public onlyOwner {
-        BloodPack bloodPack = new BloodPack(_bloodPackId);
-        bloodPacks[_bloodPackId] = bloodPack;
+    function getBloodPack(string memory bloodPackId) public view returns (string memory, uint) {
+        BloodPack bloodPack = bloodPacks[bloodPackId];
+        return (bloodPack.id(), bloodPack.createdAt());
     }
 
-    function getBloodPack(string memory _bloodPackId) public view returns (string memory, uint) {
-        BloodPack bloodPack = bloodPacks[_bloodPackId];
-        return (bloodPack.id(), bloodPack.createdAt());
+    function getBloodPackAddress(string memory bloodPackId) public view returns (address) {
+        BloodPack bloodPack = bloodPacks[bloodPackId];
+        return address(bloodPack);
+    }
+
+    function createBloodPack(string memory bloodPackId) public onlyOwner {
+        BloodPack bloodPack = new BloodPack(bloodPackId);
+        bloodPacks[bloodPackId] = bloodPack;
     }
 }
