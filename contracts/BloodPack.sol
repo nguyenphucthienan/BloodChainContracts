@@ -7,11 +7,10 @@ contract BloodPack {
     using SafeMath for uint256;
 
     struct History {
-        string fromId;
-        string fromName;
-        string toId;
-        string toName;
+        string from;
+        string to;
         string description;
+        uint transferedAt;
     }
 
     address owner;
@@ -35,12 +34,8 @@ contract BloodPack {
         createdAt = now.mul(1000);
     }
 
-    function transfer(
-        string memory fromId, string memory fromName,
-        string memory toId, string memory toName,
-        string memory description
-    ) public onlyOwner {
-        History memory history = History(fromId, fromName, toId, toName, description);
+    function transfer(string memory from, string memory to, string memory description) public onlyOwner {
+        History memory history = History(from, to, description, now.mul(1000));
         histories.push(history);
     }
 
@@ -48,13 +43,9 @@ contract BloodPack {
         return histories.length;
     }
 
-    function getHistory(uint index) public view returns (
-        string memory, string memory,
-        string memory, string memory,
-        string memory
-    ) {
+    function getHistory(uint index) public view returns (string memory, string memory, string memory, uint) {
         require(index >= 0 && index < histories.length, "Index out of bounds");
         History memory history = histories[index];
-        return (history.fromId, history.fromName, history.toId, history.toName, history.description);
+        return (history.from, history.to, history.description, history.transferedAt);
     }
 }
