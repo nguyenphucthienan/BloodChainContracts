@@ -14,6 +14,7 @@ contract BloodPack {
 
     struct History {
         TransferType transferType;
+        string id;
         string from;
         string to;
         string description;
@@ -42,11 +43,11 @@ contract BloodPack {
     }
 
     function transfer(
-        TransferType transferType,
+        TransferType transferType, string memory _id,
         string memory from, string memory to,
         string memory description
     ) public onlyOwner {
-        History memory history = History(transferType, from, to, description, now.mul(1000));
+        History memory history = History(transferType, _id, from, to, description, now.mul(1000));
         histories.push(history);
     }
 
@@ -54,11 +55,14 @@ contract BloodPack {
         return histories.length;
     }
 
-    function getHistory(uint index) public view returns (TransferType, string memory, string memory, string memory, uint) {
+    function getHistory(uint index) public view returns (
+        TransferType, string memory,
+        string memory, string memory, string memory, uint
+    ) {
         require(index >= 0 && index < histories.length, "Index out of bounds");
         History memory history = histories[index];
         return (
-            history.transferType,
+            history.transferType, history.id,
             history.from, history.to,
             history.description, history.transferedAt
         );
