@@ -6,7 +6,13 @@ import "./openzeppelin/math/SafeMath.sol";
 contract UserInfo {
     using SafeMath for uint256;
 
+    enum UpdatePointType {
+        Add,
+        Subtract
+    }
+
     struct History {
+        UpdatePointType updatePointType;
         uint amount;
         string description;
         uint updatedAt;
@@ -35,9 +41,14 @@ contract UserInfo {
         point = 0;
     }
 
-    function addPoint(uint amount, string memory description) public onlyOwner {
-        point = point.add(amount);
-        History memory history = History(amount, description, now.mul(1000));
+    function updatePoint(UpdatePointType updatePointType, uint amount, string memory description) public onlyOwner {
+        if (updatePointType == UpdatePointType.Add) {
+            point = point.add(amount);
+        } else if (updatePointType == UpdatePointType.Subtract) {
+            point = point.sub(amount);
+        }
+
+        History memory history = History(updatePointType, amount, description, now.mul(1000));
         histories.push(history);
     }
 
@@ -45,9 +56,9 @@ contract UserInfo {
         return histories.length;
     }
 
-    function getHistory(uint index) public view returns (uint, string memory, uint) {
+    function getHistory(uint index) public view returns (UpdatePointType, uint, string memory, uint) {
         require(index >= 0 && index < histories.length, "Index out of bounds");
         History memory history = histories[index];
-        return (history.amount, history.description, history.updatedAt);
+        return (history.updatePointType, history.amount, history.description, history.updatedAt);
     }
 }
