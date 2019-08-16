@@ -17,11 +17,11 @@ contract BloodChain is Killable {
         return CONTRACT_INFO;
     }
 
-    function sendFund() public payable onlyOwner { }
+    function fund() public payable { }
 
-    function withdraw(uint amount) public payable onlyOwner {
+    function transfer(address payable _address, uint amount) public payable onlyOwner {
         require (amount <= address(this).balance, "Not enough ETH");
-        _owner.transfer(amount);
+        _address.transfer(amount);
     }
 
     function getUserInfo(string memory userId) public view returns (string memory, uint, uint) {
