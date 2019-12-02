@@ -19,9 +19,9 @@ contract BloodChain is Killable {
 
     function fund() public payable { }
 
-    function transfer(address payable _address, uint amount) public payable onlyOwner {
+    function transfer(address payable toAddress, uint amount) public payable onlyOwner {
         require (amount <= address(this).balance, "Not enough ETH");
-        _address.transfer(amount);
+        toAddress.transfer(amount);
     }
 
     function getUserInfo(string memory userId) public view returns (string memory, uint, uint) {

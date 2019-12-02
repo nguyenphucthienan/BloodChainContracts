@@ -6,14 +6,17 @@ import "./openzeppelin/math/SafeMath.sol";
 contract BloodPack {
     using SafeMath for uint256;
 
-    enum TransferType {
+    enum HistoryType {
         TransferBloodPack,
         TransferBloodProduct,
+        DisposeBloodPack,
+        DisposeBloodProduct,
         ConsumeBloodProduct
     }
 
     struct History {
-        TransferType transferType;
+        HistoryType historyType;
+        string operatedBy;
         string id;
         string from;
         string to;
@@ -43,11 +46,13 @@ contract BloodPack {
     }
 
     function transfer(
-        TransferType transferType, string memory _id,
+        HistoryType historyType,
+        string memory operatedBy,
+        string memory _id,
         string memory from, string memory to,
         string memory description
     ) public onlyOwner {
-        History memory history = History(transferType, _id, from, to, description, now.mul(1000));
+        History memory history = History(historyType, operatedBy, _id, from, to, description, now.mul(1000));
         histories.push(history);
     }
 
@@ -56,14 +61,14 @@ contract BloodPack {
     }
 
     function getHistory(uint index) public view returns (
-        TransferType, string memory,
+        HistoryType, string memory, string memory,
         string memory, string memory, string memory, uint
     ) {
         require(index >= 0 && index < histories.length, "Index out of bounds");
         History memory history = histories[index];
         return (
-            history.transferType, history.id,
-            history.from, history.to,
+            history.historyType, history.operatedBy,
+            history.id, history.from, history.to,
             history.description, history.transferedAt
         );
     }
